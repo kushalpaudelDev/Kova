@@ -1,0 +1,43 @@
+{% extends "base.html" %}
+{% block title %}KOVA — Shop All{% endblock %}
+
+{% block content %}
+<section class="hero">
+  <div class="hero-text">
+    <p class="hero-tag">New Collection 2026</p>
+    <h1>Crafted for<br><em>everyday</em> living.</h1>
+    <p class="hero-sub">Timeless pieces, considered design, built to last.</p>
+    <a href="#products" class="btn-primary">Shop Now</a>
+  </div>
+  <div class="hero-img">
+    <img src="https://images.unsplash.com/photo-1490481651871-ab68de25d43d?w=700&q=80" alt="Hero"/>
+  </div>
+</section>
+
+<section class="products-section" id="products">
+  <div class="filters">
+    {% for cat in categories %}
+    <a href="?category={{ cat }}" class="filter-tag {% if cat == active %}active{% endif %}">{{ cat }}</a>
+    {% endfor %}
+  </div>
+
+  <div class="products-grid">
+    {% for p in products %}
+    <div class="card" data-id="{{ p.id }}">
+      <a href="{{ url_for('product', pid=p.id) }}" class="card-img-wrap">
+        <img src="{{ p.image }}" alt="{{ p.name }}" loading="lazy"/>
+        {% if p.badge %}<span class="card-badge">{{ p.badge }}</span>{% endif %}
+      </a>
+      <div class="card-body">
+        <span class="card-cat">{{ p.category }}</span>
+        <a href="{{ url_for('product', pid=p.id) }}"><h3 class="card-name">{{ p.name }}</h3></a>
+        <div class="card-footer">
+          <span class="card-price">${{ "%.2f"|format(p.price) }}</span>
+          <button class="add-btn" data-id="{{ p.id }}">Add to Cart</button>
+        </div>
+      </div>
+    </div>
+    {% endfor %}
+  </div>
+</section>
+{% endblock %}

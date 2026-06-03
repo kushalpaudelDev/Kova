@@ -1,0 +1,55 @@
+{% extends "base.html" %}
+{% block title %}{{ product.name }} — KOVA{% endblock %}
+
+{% block content %}
+<div class="breadcrumb">
+  <a href="{{ url_for('index') }}">Shop</a> /
+  <a href="{{ url_for('index') }}?category={{ product.category }}">{{ product.category }}</a> /
+  <span>{{ product.name }}</span>
+</div>
+
+<section class="product-detail">
+  <div class="pd-img">
+    <img src="{{ product.image }}" alt="{{ product.name }}"/>
+  </div>
+  <div class="pd-info">
+    <span class="card-cat">{{ product.category }}</span>
+    <h1 class="pd-title">{{ product.name }}</h1>
+    <p class="pd-price">${{ "%.2f"|format(product.price) }}</p>
+    <p class="pd-desc">A carefully crafted piece made with premium materials. Designed for lasting quality and everyday versatility. Each item is inspected before shipping.</p>
+    <div class="pd-qty">
+      <label>Qty</label>
+      <input type="number" id="qty-input" value="1" min="1" max="10"/>
+    </div>
+    <button class="btn-primary btn-full add-btn" data-id="{{ product.id }}">Add to Cart</button>
+    <ul class="pd-features">
+      <li>✦ Free shipping on orders over $100</li>
+      <li>✦ 30-day returns</li>
+      <li>✦ Sustainably sourced materials</li>
+    </ul>
+  </div>
+</section>
+
+{% if related %}
+<section class="related">
+  <h2>You might also like</h2>
+  <div class="products-grid small">
+    {% for p in related %}
+    <div class="card">
+      <a href="{{ url_for('product', pid=p.id) }}" class="card-img-wrap">
+        <img src="{{ p.image }}" alt="{{ p.name }}" loading="lazy"/>
+      </a>
+      <div class="card-body">
+        <span class="card-cat">{{ p.category }}</span>
+        <a href="{{ url_for('product', pid=p.id) }}"><h3 class="card-name">{{ p.name }}</h3></a>
+        <div class="card-footer">
+          <span class="card-price">${{ "%.2f"|format(p.price) }}</span>
+          <button class="add-btn" data-id="{{ p.id }}">Add</button>
+        </div>
+      </div>
+    </div>
+    {% endfor %}
+  </div>
+</section>
+{% endif %}
+{% endblock %}
