@@ -1,0 +1,49 @@
+{% extends "base.html" %}
+{% block title %}Cart — KOVA{% endblock %}
+
+{% block content %}
+<div class="cart-page">
+  <h1 class="page-title">Your Cart</h1>
+
+  {% if items %}
+  <div class="cart-layout">
+    <div class="cart-items">
+      {% for pid, item in items.items() %}
+      <div class="cart-row">
+        <img src="{{ item.image }}" alt="{{ item.name }}" class="cart-thumb"/>
+        <div class="cart-info">
+          <p class="cart-item-name">{{ item.name }}</p>
+          <p class="cart-item-price">${{ "%.2f"|format(item.price) }}</p>
+        </div>
+        <form action="{{ url_for('update_cart', pid=pid) }}" method="post" class="qty-form">
+          <input type="number" name="qty" value="{{ item.qty }}" min="0" max="10" onchange="this.form.submit()"/>
+        </form>
+        <p class="cart-line-total">${{ "%.2f"|format(item.price * item.qty) }}</p>
+        <form action="{{ url_for('remove_from_cart', pid=pid) }}" method="post">
+          <button class="remove-btn" title="Remove">✕</button>
+        </form>
+      </div>
+      {% endfor %}
+    </div>
+
+    <div class="cart-summary">
+      <h2>Order Summary</h2>
+      <div class="summary-row"><span>Subtotal</span><span>${{ total }}</span></div>
+      <div class="summary-row"><span>Shipping</span><span>{% if total >= 100 %}Free{% else %}$9.99{% endif %}</span></div>
+      <div class="summary-row total-row">
+        <span>Total</span>
+        <span>${{ "%.2f"|format(total if total >= 100 else total + 9.99) }}</span>
+      </div>
+      <a href="{{ url_for('checkout') }}" class="btn-primary btn-full">Checkout</a>
+      <a href="{{ url_for('index') }}" class="btn-ghost btn-full">Continue Shopping</a>
+    </div>
+  </div>
+
+  {% else %}
+  <div class="empty-cart">
+    <p>🛍 Your cart is empty.</p>
+    <a href="{{ url_for('index') }}" class="btn-primary">Start Shopping</a>
+  </div>
+  {% endif %}
+</div>
+{% endblock %}
