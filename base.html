@@ -1,0 +1,39 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>{% block title %}KOVA — Modern Store{% endblock %}</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com"/>
+  <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:wght@400;600;700&family=DM+Sans:wght@300;400;500&display=swap" rel="stylesheet"/>
+  <link rel="stylesheet" href="{{ url_for('static', filename='css/style.css') }}"/>
+</head>
+<body>
+
+  <header class="header">
+    <a href="{{ url_for('index') }}" class="logo">KOVA</a>
+    <nav class="nav">
+      <a href="{{ url_for('index') }}">Shop</a>
+      <a href="{{ url_for('index') }}?category=Clothing">Clothing</a>
+      <a href="{{ url_for('index') }}?category=Accessories">Accessories</a>
+      <a href="{{ url_for('index') }}?category=Home">Home</a>
+    </nav>
+    <a href="{{ url_for('cart') }}" class="cart-btn">
+      <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8"><path d="M6 2L3 6v14a2 2 0 002 2h14a2 2 0 002-2V6l-3-4z"/><line x1="3" y1="6" x2="21" y2="6"/><path d="M16 10a4 4 0 01-8 0"/></svg>
+      {% if cart_count > 0 %}<span class="badge">{{ cart_count }}</span>{% endif %}
+      <span class="cart-label">Cart · ${{ cart_total }}</span>
+    </a>
+  </header>
+
+  <main>{% block content %}{% endblock %}</main>
+
+  <footer class="footer">
+    <div class="footer-inner">
+      <span class="logo-sm">KOVA</span>
+      <p>© 2026 KOVA Store. Built with Python & Flask.</p>
+    </div>
+  </footer>
+
+  <script src="{{ url_for('static', filename='js/cart.js') }}"></script>
+</body>
+</html>
